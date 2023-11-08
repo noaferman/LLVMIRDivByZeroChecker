@@ -22,17 +22,20 @@ namespace dataflow {
  */
 
 bool DivZeroAnalysis::check(Instruction *Inst) {
-  /**
-   * TODO: Write your code to check if Inst can cause a division by zero.
-   *
-   * Inst can cause a division by zero if:
-   *   Inst is a signed or unsigned division instruction and,
-   *   The divisor is either Zero or MaybeZero.
-   *
-   * Hint: getOrExtract function may be useful to simplify your code.
-   */
-  return false;
+  if (BinaryOperator *BO = dyn_cast<BinaryOperator>(Inst)) {
+    // I is a BinaryOperator, do something
+    unsigned op_code = BO->getOpcode();
+    if(op_code != Instruction::UDiv && op_code != Instruction::SDiv) return false;
+
+    llvm::Value *divisor = BO->getOperand(1);
+    Domain *domain_of_divisor =  getOrExtract(InMap[Inst], divisor);
+
+    return Domain::equal(*domain_of_divisor, Domain::MaybeZero) || Domain::equal(*domain_of_divisor, Domain::Zero);
+  }
+  
+ return false;
 }
+
 
 bool DivZeroAnalysis::runOnFunction(Function &F) {
   outs() << "Running " << getAnalysisName() << " on " << F.getName() << "\n";

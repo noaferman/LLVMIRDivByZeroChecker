@@ -49,10 +49,21 @@ Domain *eval(PHINode *Phi, const Memory *InMem) {
  * @return Domain of BinOp
  */
 Domain *eval(BinaryOperator *BinOp, const Memory *InMem) {
-  /**
-   * TODO: Write your code here that evaluates +, -, * and /
-   * based on the Domains of the operands.
-   */
+  unsigned op_code = BinOp->getOpcode();
+  Domain* domain_left = getOrExtract(InMem, BinOp->getOperand(0));
+  Domain* domain_right = getOrExtract(InMem, BinOp->getOperand(1));
+
+  if(op_code == Instruction::Add || op_code == Instruction::FAdd){
+    return Domain::add(domain_left, domain_right);
+  } else if(op_code == Instruction::Sub || op_code == Instruction::FSub){
+    return Domain::sub(domain_left, domain_right);
+  } else if(op_code == Instruction::Mul || op_code == Instruction::FMul){
+    return Domain::mul(domain_left, domain_right);
+  } else if(op_code == Instruction::UDiv || op_code == Instruction::SDiv || op_code == Instruction::FDiv){
+    return Domain::mul(domain_left, domain_right);
+  } 
+
+  return NULL;
 }
 
 /**
@@ -63,10 +74,8 @@ Domain *eval(BinaryOperator *BinOp, const Memory *InMem) {
  * @return Domain of Cast
  */
 Domain *eval(CastInst *Cast, const Memory *InMem) {
-  /**
-   * TODO: Write your code here to evaluate Cast instruction.
-   */
-  return NULL;
+  Value* left_operator = Cast->getOperand(0);
+  return getOrExtract(InMem, left_operator);
 }
 
 /**
@@ -78,14 +87,17 @@ Domain *eval(CastInst *Cast, const Memory *InMem) {
  * @return Domain of Cmp
  */
 Domain *eval(CmpInst *Cmp, const Memory *InMem) {
-  /**
-   * TODO: Write your code here that evaluates:
-   * ==, !=, <, <=, >=, and > based on the Domains of the operands.
-   *
-   * NOTE: There is a lot of scope for refining this, but you can just return
-   * MaybeZero for comparisons other than equality.
-   */
-   return NULL;
+  CmpInst::Predicate opr=Cmp->getPredicate();
+  Domain* domain_left = getOrExtract(InMem, Cmp->getOperand(0));
+  Domain* domain_right = getOrExtract(InMem, Cmp->getOperand(1));
+
+  if(opr == CmpInst::Predicate::ICMP_EQ){
+    if(Domain::equal(*domain_left, *domain_right)) return domain_left;
+  } 
+
+  // TODO: Come back and add other operators.
+
+  return new Domain(Domain::MaybeZero);
 }
 
 void DivZeroAnalysis::transfer(Instruction *Inst, const Memory *In,

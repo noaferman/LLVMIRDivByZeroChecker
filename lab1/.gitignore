@@ -1,8 +1,0 @@
-afl_output/
-results/
-output.db
-submission/
-submission.zip
-
-# Core dumps
-core.*

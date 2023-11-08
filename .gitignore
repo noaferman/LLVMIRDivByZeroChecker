@@ -1,5 +1,5 @@
-# built binaries
-build
+# # built binaries
+# build
 
 # bitcode and analysis output
 *.out

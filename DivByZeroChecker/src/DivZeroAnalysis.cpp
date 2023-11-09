@@ -60,6 +60,14 @@ bool DivZeroAnalysis::runOnFunction(Function &F) {
   printMap(F, InMap, OutMap);
   outs() << "Potential Instructions by " << getAnalysisName() << ": \n";
   for (auto Inst : ErrorInsts) {
+    llvm::DebugLoc DebugLoc = Inst->getDebugLoc();
+    if (DebugLoc) {
+      int Line = DebugLoc.getLine();
+      int Col = DebugLoc.getCol();
+      outs() << "Line: " << Line << ",  Col:" << Col << "\n";
+    } else{
+        outs() << "No Debug info \n";
+    }
     outs() << *Inst << "\n";
   }
 

@@ -64,11 +64,11 @@ bool DivZeroAnalysis::runOnFunction(Function &F) {
     if (DebugLoc) {
       int Line = DebugLoc.getLine();
       int Col = DebugLoc.getCol();
-      outs() << "Line: " << Line << ",  Col:" << Col << "\n";
+      outs() << "Possible bug on Line: " << Line << ",  Col:" << Col << "\n";
     } else{
         outs() << "No Debug info \n";
     }
-    outs() << *Inst << "\n";
+    outs() << "Corresponding LLVM IR Instruction:" << *Inst << "\n";
   }
 
   for (auto Iter = inst_begin(F), End = inst_end(F); Iter != End; ++Iter) {

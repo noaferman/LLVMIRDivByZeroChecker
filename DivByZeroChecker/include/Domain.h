@@ -16,10 +16,14 @@ namespace dataflow {
  */
 class Domain {
 public:
-  enum Element { Uninit, NonZero, Zero, MaybeZero };
+  enum Element {Uninit, Interval};
   Domain();
   Domain(Element V);
+  Domain(Element V, int interval_min, int interval_max);
+
   Element Value;
+  int interval_min;
+  int interval_max;
 
   static Domain *add(Domain *E1, Domain *E2);
   static Domain *sub(Domain *E1, Domain *E2);
@@ -30,7 +34,7 @@ public:
   void print(raw_ostream &O);
 };
 
-raw_ostream &operator<<(raw_ostream &O, Domain V);
+raw_ostream &operator<<(raw_ostream &O, Domain D);
 
 } // namespace dataflow
 

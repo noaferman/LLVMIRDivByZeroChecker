@@ -9,100 +9,119 @@ namespace dataflow {
 Domain::Domain() { Value = Uninit; }
 Domain::Domain(Element V) { Value = V; }
 
+Domain::Domain(Element V, int interval_min, int interval_max) {
+  Value = V; 
+  interval_min = interval_min;
+  interval_max = interval_max;
+}
+
 Domain *Domain::add(Domain *E1, Domain *E2) {
   if (E1->Value == Uninit || E2->Value == Uninit)
     return new Domain(Uninit);
-  if (E1->Value == Zero && E2->Value == Zero)
-    return new Domain(Zero);
-  if (E1->Value == Zero && E2->Value == NonZero)
-    return new Domain(NonZero);
-  if (E1->Value == NonZero && E2->Value == Zero)
-    return new Domain(NonZero);
-  return new Domain(MaybeZero);
+  // Both intervals here
+  // sanity check if statement
+  if (E1->Value == Interval && E2->Value == Interval){
+    int min = E1.interval_min + E2.interval_min;
+    int max = E1.interval_max + E2.interval_max;
+    return new Domain(Interval, min, max);
+  }
+
+  // should never get here
+  return new Domain(Uninit);
 }
 
 Domain *Domain::sub(Domain *E1, Domain *E2) {
   if (E1->Value == Uninit || E2->Value == Uninit)
     return new Domain(Uninit);
-  if (E1->Value == Zero && E2->Value == Zero)
-    return new Domain(Zero);
-  if (E1->Value == Zero && E2->Value == NonZero)
-    return new Domain(NonZero);
-  if (E1->Value == NonZero && E2->Value == Zero)
-    return new Domain(NonZero);
-  return new Domain(MaybeZero);
+  // Both intervals here
+  // sanity check if statement
+  if (E1->Value == Interval && E2->Value == Interval){
+    int min = E1.interval_min - E2.interval_max;
+    int max = E1.interval_max - E2.interval_min;
+    return new Domain(Interval, min, max);
+  }
+
+  // should never get here
+  return new Domain(Uninit);
 }
 
 Domain *Domain::mul(Domain *E1, Domain *E2) {
   if (E1->Value == Uninit || E2->Value == Uninit)
     return new Domain(Uninit);
-  if (E1->Value == Zero || E2->Value == Zero)
-    return new Domain(Zero);
-  if (E1->Value == NonZero && E2->Value == NonZero)
-    return new Domain(NonZero);
-  return new Domain(MaybeZero);
+  // Both intervals here
+  // sanity check if statement
+  if (E1->Value == Interval && E2->Value == Interval){
+    int min = E1.interval_min * E2.interval_min;
+    int max = E1.interval_max * E2.interval_max;
+    return new Domain(Interval, min, max);
+  }
+
+  // should never get here
+  return new Domain(Uninit);
 }
 
 Domain *Domain::div(Domain *E1, Domain *E2) {
   if (E1->Value == Uninit || E2->Value == Uninit)
     return new Domain(Uninit);
-  if (E2->Value == Zero || E2->Value == MaybeZero)
-    return new Domain(Uninit);
-  if (E1->Value == NonZero)
-    return new Domain(MaybeZero);
-  if (E1->Value == Zero)
-    return new Domain(Zero);
-  return new Domain(MaybeZero);
+  // Both intervals here
+  // sanity check if statement
+  if (E1->Value == Interval && E2->Value == Interval){
+    int min = E1.interval_min / E2.interval_max;
+    int max = E1.interval_max / E2.interval_min;
+    return new Domain(Interval, min, max);
+  }
+
+  // should never get here
+  return new Domain(Uninit);
 }
 
 Domain *Domain::join(Domain *E1, Domain *E2) {
   switch (E1->Value) {
   case Uninit:
     return new Domain(*E2);
-  case NonZero:
+  case Interval:
     switch (E2->Value) {
     case Uninit:
-    case NonZero:
-      return new Domain(NonZero);
-    case Zero:
-    case MaybeZero:
-      return new Domain(MaybeZero);
+      return new Domain(Interval, E1->interval_min, E1->interval_max);
+    case Interval:
+      int min = E1->interval_min;
+      int max = E2->interval_max;
+      if(E2->interval_min < E1->interval_min){
+        min = E2->interval_min;
+      }
+      if(E2->interval_max > E1->interval_max){
+        max = E2->interval_max;
+      }
+      return new Domain(Interval, min, max);
     }
-  case Zero:
-    switch (E2->Value) {
-    case Uninit:
-    case Zero:
-      return new Domain(Zero);
-    case NonZero:
-    case MaybeZero:
-      return new Domain(MaybeZero);
-    }
-  case MaybeZero:
-    return new Domain(MaybeZero);
-  }
 }
 
-bool Domain::equal(Domain E1, Domain E2) { return E1.Value == E2.Value; }
+bool Domain::equal(Domain E1, Domain E2) {
+  if(E1.Value != E2.Value && E1.Value) return false;
+  if(E1.Value == E2.Value && E1.Value == Domain::Uninit){
+    return true;
+  }
+
+  // both intervals
+  if(E1.interval_min == E2.interval_min && E1.interval_max == E2.interval_max){
+    return true;
+  }
+
+  return false;
+}
 
 void Domain::print(raw_ostream &O) {
   switch (Value) {
   case Uninit:
     O << "Uninit   ";
     break;
-  case NonZero:
-    O << "NonZero  ";
-    break;
-  case Zero:
-    O << "Zero     ";
-    break;
-  case MaybeZero:
-    O << "MaybeZero";
-    break;
+  case Interval:
+    O << "Interval [" << V.interval_min << ", " << V.interval_max << "]";
   }
 }
 
 raw_ostream &operator<<(raw_ostream &O, Domain V) {
-  V.print(O);
+  D.print(O);
   return O;
 }
 

@@ -30,6 +30,7 @@ bool DivZeroAnalysis::check(Instruction *Inst) {
     llvm::Value *divisor = BO->getOperand(1);
     Domain *domain_of_divisor =  getOrExtract(InMap[Inst], divisor);
 
+    
     return Domain::equal(*domain_of_divisor, Domain::MaybeZero) || Domain::equal(*domain_of_divisor, Domain::Zero);
   }
   

@@ -56,6 +56,8 @@ Domain *getOrExtract(const Memory *Mem, const Value *Val) {
     Domain::Element element = extractFromValue(V, &min, &max);
     return new Domain(element, min, max);
   });
+
+  return NULL;
 }
 
 void printMemory(const Memory *Mem) {

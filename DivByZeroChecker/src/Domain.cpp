@@ -95,6 +95,8 @@ Domain *Domain::join(Domain *E1, Domain *E2) {
       return new Domain(Interval, min, max);
     }
   }
+
+  return new Domain(Uninit);
 } 
 
 bool Domain::equal(Domain E1, Domain E2) {

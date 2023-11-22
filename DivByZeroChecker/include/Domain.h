@@ -16,7 +16,9 @@ namespace dataflow {
  */
 class Domain {
 public:
-  enum Element {Uninit, Interval};
+  // Top [MIN_INTEGER, MAX_INTEGER]
+  // Bottom is Uninit
+  enum Element {Uninit, Interval, Top};
   Domain();
   Domain(Element V);
   Domain(Element V, int interval_min, int interval_max);

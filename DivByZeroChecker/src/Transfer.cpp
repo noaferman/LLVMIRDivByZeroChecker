@@ -28,7 +28,10 @@ bool isInput(Instruction *Inst) {
  */
 Domain *eval(PHINode *Phi, const Memory *InMem) {
   if (auto ConstantVal = Phi->hasConstantValue()) {
-    return new Domain(extractFromValue(ConstantVal));
+    int min = 0;
+    int max = 0;
+    Domain::Element element = extractFromValue(ConstantVal, &min, &max);
+    return new Domain(element, min, max);
   }
 
   Domain *Joined = new Domain(Domain::Uninit);
@@ -97,14 +100,14 @@ Domain *eval(CmpInst *Cmp, const Memory *InMem) {
 
   // TODO: Come back and add other operators.
 
-  return new Domain(Domain::MaybeZero);
+  return new Domain(Domain::Top);
 }
 
 void DivZeroAnalysis::transfer(Instruction *Inst, const Memory *In,
                                Memory &NOut) {
   if (isInput(Inst)) {
     // The instruction is a user controlled input, it can have any value.
-    NOut[variable(Inst)] = new Domain(Domain::MaybeZero);
+    NOut[variable(Inst)] = new Domain(Domain::Top);
   } else if (auto Phi = dyn_cast<PHINode>(Inst)) {
     // Evaluate PHI node
     NOut[variable(Phi)] = eval(Phi, In);

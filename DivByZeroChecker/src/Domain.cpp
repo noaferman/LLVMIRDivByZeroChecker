@@ -21,8 +21,8 @@ Domain *Domain::add(Domain *E1, Domain *E2) {
   // Both intervals here
   // sanity check if statement
   if (E1->Value == Interval && E2->Value == Interval){
-    int min = E1.interval_min + E2.interval_min;
-    int max = E1.interval_max + E2.interval_max;
+    int min = E1->interval_min + E2->interval_min;
+    int max = E1->interval_max + E2->interval_max;
     return new Domain(Interval, min, max);
   }
 
@@ -36,8 +36,8 @@ Domain *Domain::sub(Domain *E1, Domain *E2) {
   // Both intervals here
   // sanity check if statement
   if (E1->Value == Interval && E2->Value == Interval){
-    int min = E1.interval_min - E2.interval_max;
-    int max = E1.interval_max - E2.interval_min;
+    int min = E1->interval_min - E2->interval_max;
+    int max = E1->interval_max - E2->interval_min;
     return new Domain(Interval, min, max);
   }
 
@@ -51,8 +51,8 @@ Domain *Domain::mul(Domain *E1, Domain *E2) {
   // Both intervals here
   // sanity check if statement
   if (E1->Value == Interval && E2->Value == Interval){
-    int min = E1.interval_min * E2.interval_min;
-    int max = E1.interval_max * E2.interval_max;
+    int min = E1->interval_min * E2->interval_min;
+    int max = E1->interval_max * E2->interval_max;
     return new Domain(Interval, min, max);
   }
 
@@ -66,8 +66,8 @@ Domain *Domain::div(Domain *E1, Domain *E2) {
   // Both intervals here
   // sanity check if statement
   if (E1->Value == Interval && E2->Value == Interval){
-    int min = E1.interval_min / E2.interval_max;
-    int max = E1.interval_max / E2.interval_min;
+    int min = E1->interval_min / E2->interval_max;
+    int max = E1->interval_max / E2->interval_min;
     return new Domain(Interval, min, max);
   }
 
@@ -94,7 +94,8 @@ Domain *Domain::join(Domain *E1, Domain *E2) {
       }
       return new Domain(Interval, min, max);
     }
-}
+  }
+} 
 
 bool Domain::equal(Domain E1, Domain E2) {
   if(E1.Value != E2.Value && E1.Value) return false;
@@ -116,11 +117,11 @@ void Domain::print(raw_ostream &O) {
     O << "Uninit   ";
     break;
   case Interval:
-    O << "Interval [" << V.interval_min << ", " << V.interval_max << "]";
+    O << "Interval [" << interval_min << ", " << interval_max << "]";
   }
 }
 
-raw_ostream &operator<<(raw_ostream &O, Domain V) {
+raw_ostream &operator<<(raw_ostream &O, Domain D) {
   D.print(O);
   return O;
 }

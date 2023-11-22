@@ -1,6 +1,7 @@
 #include "Utils.h"
 #include "DivZeroAnalysis.h"
 #include "Domain.h"
+#include "llvm/IR/Constants.h"
 
 const char *WHITESPACES = " \t\n\r";
 const size_t VARIABLE_PADDED_LEN = 8;
@@ -34,18 +35,26 @@ std::string variable(const Value *Val) {
   return RetVal;
 }
 
-Domain::Element extractFromValue(const Value *Val) {
+Domain::Element extractFromValue(const Value *Val, int* min, int* max) {
   if (dyn_cast<UndefValue>(Val)) {
-    return Domain::MaybeZero;
+    return Domain::Top;
   } else if (auto ConstVal = dyn_cast<ConstantData>(Val)) {
-    return (ConstVal->isZeroValue() ? Domain::Zero : Domain::NonZero);
+    if (ConstVal->isZeroValue()){
+      return Domain::Interval; // the interval will just be 0s
+    } else{
+     return Domain::Uninit;
+    } 
   }
   return Domain::Uninit;
 }
 
 Domain *getOrExtract(const Memory *Mem, const Value *Val) {
   return getOrDefault<Domain *>(Mem, variable(Val), [&V = Val] {
-    return new Domain(extractFromValue(V));
+    // will get default inited to 0 anyways 
+    int min = 0;
+    int max = 0;
+    Domain::Element element = extractFromValue(V, &min, &max);
+    return new Domain(element, min, max);
   });
 }
 

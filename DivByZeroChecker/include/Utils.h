@@ -24,7 +24,7 @@ std::string variable(const Value *Val);
  * @return Domain::Element Domain of Val, or Domain::Uninit if
  *  Val is not a ConstantInt.
  */
-Domain::Element extractFromValue(const Value *Val);
+Domain::Element extractFromValue(const Value *Val, int* min, int* max);
 
 /**
  * @brief Get the Domain of Val from Memory Or try Extracting it.

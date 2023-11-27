@@ -97,6 +97,15 @@ Domain *eval(CmpInst *Cmp, const Memory *InMem) {
   if(opr == CmpInst::Predicate::ICMP_EQ){
     if(Domain::equal(*domain_left, *domain_right)) return domain_left;
   } 
+  
+  // TODO: How to deal with the while loop flipping this.
+  //  else if (opr == CmpInst::Predicate::ICMP_SLT){
+  //   if(domain_left->Value == Domain::Interval){
+  //     return new Domain(Domain::Interval, INT_MIN, domain_left->interval_max);
+  //   }
+  // }
+
+
 
   // TODO: Come back and add other operators.
 

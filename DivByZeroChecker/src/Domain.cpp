@@ -6,6 +6,8 @@
 
 namespace dataflow {
 
+int num = 0;
+
 Domain::Domain() { Value = Uninit; }
 Domain::Domain(Element V) { Value = V; }
 
@@ -76,6 +78,11 @@ Domain *Domain::div(Domain *E1, Domain *E2) {
 }
 
 Domain *Domain::join(Domain *E1, Domain *E2) {
+  num++;
+
+  if(num > 10000000){
+    return new Domain(Uninit);
+  }
   switch (E1->Value) {
   case Uninit:
     return new Domain(*E2);

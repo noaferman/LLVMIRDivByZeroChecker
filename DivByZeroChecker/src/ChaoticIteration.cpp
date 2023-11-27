@@ -164,7 +164,6 @@ void DivZeroAnalysis::doAnalysis(Function &F) {
   }
 
   while(!WorkSet.empty()){
-
     // pop instruction
     Instruction *Inst = WorkSet.front();
     WorkSet.remove(Inst);

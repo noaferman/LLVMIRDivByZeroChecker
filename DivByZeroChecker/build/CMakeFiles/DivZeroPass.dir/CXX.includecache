@@ -57,6 +57,8 @@ Utils.h
 /DivByZeroChecker/src/Domain.cpp
 Domain.h
 /DivByZeroChecker/src/Domain.h
+ostream
+-
 
 /DivByZeroChecker/src/Transfer.cpp
 DivZeroAnalysis.h

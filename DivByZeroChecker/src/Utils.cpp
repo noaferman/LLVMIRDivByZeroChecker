@@ -37,7 +37,7 @@ std::string variable(const Value *Val) {
 
 Domain::Element extractFromValue(const Value *Val, int* min, int* max) {
   if (dyn_cast<UndefValue>(Val)) {
-    return Domain::Top;
+    return Domain::Uninit;
   } else if (auto ConstVal = dyn_cast<ConstantData>(Val)) {
     if (ConstVal->isZeroValue()){
       return Domain::Interval; // the interval will just be 0s

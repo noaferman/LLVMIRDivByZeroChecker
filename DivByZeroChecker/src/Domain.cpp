@@ -1,8 +1,12 @@
 #include "Domain.h"
+#include <ostream>
 
 //===----------------------------------------------------------------------===//
 // Abstract Domain Implementation
 //===----------------------------------------------------------------------===//
+
+#define MIN(a, b) a < b ? a : b;
+#define MAX(a, b) a > b ? a : b;
 
 namespace dataflow {
 
@@ -12,6 +16,11 @@ Domain::Domain() { Value = Uninit; }
 Domain::Domain(Element V) { Value = V; }
 
 Domain::Domain(Element V, int interval_min, int interval_max) {
+  if(interval_min > interval_max){
+    outs() << "min " << interval_min << "max: " << interval_max << '\n';
+    // assert(interval_min <= interval_max);
+  }
+
   Value = V; 
   interval_min = interval_min;
   interval_max = interval_max;
@@ -78,27 +87,25 @@ Domain *Domain::div(Domain *E1, Domain *E2) {
 }
 
 Domain *Domain::join(Domain *E1, Domain *E2) {
+  outs() << "join" << "\n";
+  outs().flush();
+  // std::flush outs());
   num++;
 
-  if(num > 10000000){
-    return new Domain(Uninit);
-  }
+  // if(num > 10000000){
+  //   return new Domain(Uninit);
+  // }
+
   switch (E1->Value) {
   case Uninit:
-    return new Domain(*E2);
+    return new Domain(Uninit);
   case Interval:
     switch (E2->Value) {
     case Uninit:
-      return new Domain(Interval, E1->interval_min, E1->interval_max);
+      return new Domain(Uninit);
     case Interval:
-      int min = E1->interval_min;
-      int max = E2->interval_max;
-      if(E2->interval_min < E1->interval_min){
-        min = E2->interval_min;
-      }
-      if(E2->interval_max > E1->interval_max){
-        max = E2->interval_max;
-      }
+      int min = MIN(E1->interval_min, E2->interval_min);
+      int max = MAX(E1->interval_max, E2->interval_max);
       return new Domain(Interval, min, max);
     }
   }

@@ -94,40 +94,58 @@ Domain *eval(CmpInst *Cmp, const Memory *InMem) {
   Domain* domain_left = getOrExtract(InMem, Cmp->getOperand(0));
   Domain* domain_right = getOrExtract(InMem, Cmp->getOperand(1));
 
+
   if(opr == CmpInst::Predicate::ICMP_EQ){
     if(Domain::equal(*domain_left, *domain_right)) return domain_left;
   } 
   
   // TODO: How to deal with the while loop flipping this.
-  //  else if (opr == CmpInst::Predicate::ICMP_SLT){
-  //   if(domain_left->Value == Domain::Interval){
-  //     return new Domain(Domain::Interval, INT_MIN, domain_left->interval_max);
-  //   }
-  // }
+   else if (opr == CmpInst::Predicate::ICMP_SLT){
+      outs() << "left: "; 
+      domain_left->print(outs());
+      outs() << "\n" ;
+      domain_right->print(outs());
+      outs() << "\n" ;
+    if(domain_left->Value == Domain::Interval){
+      return new Domain(Domain::Interval, INT_MIN, domain_left->interval_max);
+    }
+  }
 
 
 
   // TODO: Come back and add other operators.
 
-  return new Domain(Domain::Top);
+  return new Domain(Domain::Uninit);
 }
 
 void DivZeroAnalysis::transfer(Instruction *Inst, const Memory *In,
                                Memory &NOut) {
+
+  for(auto& [key, value] : *In){
+    outs()<< "key, value:" << key << ", ";
+    value->print(outs());
+    outs() << "\n";
+  }
+           
   if (isInput(Inst)) {
     // The instruction is a user controlled input, it can have any value.
-    NOut[variable(Inst)] = new Domain(Domain::Top);
+    outs() << "Inst input" << '\n';
+    NOut[variable(Inst)] = new Domain(Domain::Uninit);
   } else if (auto Phi = dyn_cast<PHINode>(Inst)) {
+    outs() << "Inst Phi" << "\n" << "\n";
     // Evaluate PHI node
     NOut[variable(Phi)] = eval(Phi, In);
   } else if (auto BinOp = dyn_cast<BinaryOperator>(Inst)) {
     // Evaluate BinaryOperator
+    outs() << "Inst BinOp" << '\n';
     NOut[variable(BinOp)] = eval(BinOp, In);
   } else if (auto Cast = dyn_cast<CastInst>(Inst)) {
     // Evaluate Cast instruction
+    outs() << "Inst Cast" << '\n';
     NOut[variable(Cast)] = eval(Cast, In);
   } else if (auto Cmp = dyn_cast<CmpInst>(Inst)) {
     // Evaluate Comparision instruction
+    outs() << "Inst CMP" << '\n';
     NOut[variable(Cmp)] = eval(Cmp, In);
   } else if (auto Alloca = dyn_cast<AllocaInst>(Inst)) {
     // Used for the next lab, do nothing here.

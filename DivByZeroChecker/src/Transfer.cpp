@@ -20,50 +20,50 @@ bool isInput(Instruction *Inst) {
 }
 
 /**
- * Evaluate a PHINode to get its Domain.
+ * Evaluate a PHINode to get its Interval.
  *
  * @param Phi PHINode to evaluate
  * @param InMem InMemory of Phi
- * @return Domain of Phi
+ * @return Interval of Phi
  */
-Domain *eval(PHINode *Phi, const Memory *InMem) {
+Interval *eval(PHINode *Phi, const Memory *InMem) {
   if (auto ConstantVal = Phi->hasConstantValue()) {
     int min = 0;
     int max = 0;
-    Domain::Element element = extractFromValue(ConstantVal, &min, &max);
-    return new Domain(element, min, max);
+    extractFromValue(ConstantVal, &min, &max);
+    return new Interval(min, max);
   }
 
-  Domain *Joined = new Domain(Domain::Uninit);
+  Interval *Joined = new Interval();
 
   for (unsigned int i = 0; i < Phi->getNumIncomingValues(); i++) {
     auto Dom = getOrExtract(InMem, Phi->getIncomingValue(i));
-    Joined = Domain::join(Joined, Dom);
+    Joined = Interval::join(Joined, Dom);
   }
   return Joined;
 }
 
 /**
  * @brief Evaluate the +, -, * and / BinaryOperator instructions
- * using the Domain of its operands and return the Domain of the result.
+ * using the Interval of its operands and return the Interval of the result.
  *
  * @param BinOp BinaryOperator to evaluate
  * @param InMem InMemory of BinOp
- * @return Domain of BinOp
+ * @return Interval of BinOp
  */
-Domain *eval(BinaryOperator *BinOp, const Memory *InMem) {
+Interval *eval(BinaryOperator *BinOp, const Memory *InMem) {
   unsigned op_code = BinOp->getOpcode();
-  Domain* domain_left = getOrExtract(InMem, BinOp->getOperand(0));
-  Domain* domain_right = getOrExtract(InMem, BinOp->getOperand(1));
+  Interval* left = getOrExtract(InMem, BinOp->getOperand(0));
+  Interval* right = getOrExtract(InMem, BinOp->getOperand(1));
 
   if(op_code == Instruction::Add || op_code == Instruction::FAdd){
-    return Domain::add(domain_left, domain_right);
+    return Interval::add(left, right);
   } else if(op_code == Instruction::Sub || op_code == Instruction::FSub){
-    return Domain::sub(domain_left, domain_right);
+    return Interval::sub(left, right);
   } else if(op_code == Instruction::Mul || op_code == Instruction::FMul){
-    return Domain::mul(domain_left, domain_right);
+    return Interval::mul(left, right);
   } else if(op_code == Instruction::UDiv || op_code == Instruction::SDiv || op_code == Instruction::FDiv){
-    return Domain::mul(domain_left, domain_right);
+    return Interval::mul(left, right);
   } 
 
   return NULL;
@@ -74,85 +74,61 @@ Domain *eval(BinaryOperator *BinOp, const Memory *InMem) {
  *
  * @param Cast Cast instruction to evaluate
  * @param InMem InMemory of Instruction
- * @return Domain of Cast
+ * @return Interval of Cast
  */
-Domain *eval(CastInst *Cast, const Memory *InMem) {
+Interval *eval(CastInst *Cast, const Memory *InMem) {
   Value* left_operator = Cast->getOperand(0);
   return getOrExtract(InMem, left_operator);
 }
 
 /**
  * @brief Evaluate the ==, !=, <, <=, >=, and > Comparision operators using
- * the Domain of its operands to compute the Domain of the result.
+ * the Interval of its operands to compute the Interval of the result.
  *
  * @param Cmp Comparision instruction to evaluate
  * @param InMem InMemory of Cmp
- * @return Domain of Cmp
+ * @return Interval of Cmp
  */
-Domain *eval(CmpInst *Cmp, const Memory *InMem) {
+Interval *eval(CmpInst *Cmp, const Memory *InMem) {
   CmpInst::Predicate opr=Cmp->getPredicate();
-  Domain* domain_left = getOrExtract(InMem, Cmp->getOperand(0));
-  Domain* domain_right = getOrExtract(InMem, Cmp->getOperand(1));
+  Interval* left = getOrExtract(InMem, Cmp->getOperand(0));
+  Interval* right = getOrExtract(InMem, Cmp->getOperand(1));
 
 
   if(opr == CmpInst::Predicate::ICMP_EQ){
-    if(Domain::equal(*domain_left, *domain_right)) return domain_left;
-  } 
-  
-  // TODO: How to deal with the while loop flipping this.
-   else if (opr == CmpInst::Predicate::ICMP_SLT){
-      outs() << "left: "; 
-      domain_left->print(outs());
-      outs() << "\n" ;
-      domain_right->print(outs());
-      outs() << "\n" ;
-    if(domain_left->Value == Domain::Interval){
-      return new Domain(Domain::Interval, INT_MIN, domain_left->interval_max);
-    }
+    if(Interval::equal(*left, *right)) return left;
+  } else if (opr == CmpInst::Predicate::ICMP_SLT){
+    return new Interval();
+    //  return new Interval(INT_MIN, left->max);
   }
 
-
-
   // TODO: Come back and add other operators.
-
-  return new Domain(Domain::Uninit);
+  return new Interval();
 }
 
 void DivZeroAnalysis::transfer(Instruction *Inst, const Memory *In,
-                               Memory &NOut) {
-
-  for(auto& [key, value] : *In){
-    outs()<< "key, value:" << key << ", ";
-    value->print(outs());
-    outs() << "\n";
-  }
-           
+                               Memory &NOut) { 
   if (isInput(Inst)) {
     // The instruction is a user controlled input, it can have any value.
-    outs() << "Inst input" << '\n';
-    NOut[variable(Inst)] = new Domain(Domain::Uninit);
+    NOut[variable(Inst)] = new Interval();
   } else if (auto Phi = dyn_cast<PHINode>(Inst)) {
-    outs() << "Inst Phi" << "\n" << "\n";
     // Evaluate PHI node
     NOut[variable(Phi)] = eval(Phi, In);
   } else if (auto BinOp = dyn_cast<BinaryOperator>(Inst)) {
     // Evaluate BinaryOperator
-    outs() << "Inst BinOp" << '\n';
     NOut[variable(BinOp)] = eval(BinOp, In);
   } else if (auto Cast = dyn_cast<CastInst>(Inst)) {
     // Evaluate Cast instruction
-    outs() << "Inst Cast" << '\n';
     NOut[variable(Cast)] = eval(Cast, In);
   } else if (auto Cmp = dyn_cast<CmpInst>(Inst)) {
     // Evaluate Comparision instruction
-    outs() << "Inst CMP" << '\n';
     NOut[variable(Cmp)] = eval(Cmp, In);
   } else if (auto Alloca = dyn_cast<AllocaInst>(Inst)) {
-    // Used for the next lab, do nothing here.
+    // Used for the next iteration, do nothing here.
   } else if (auto Store = dyn_cast<StoreInst>(Inst)) {
-    // Used for the next lab, do nothing here.
+    // Used for the next iteration, do nothing here.
   } else if (auto Load = dyn_cast<LoadInst>(Inst)) {
-    // Used for the next lab, do nothing here.
+    // Used for the next iteration, do nothing here.
   } else if (auto Branch = dyn_cast<BranchInst>(Inst)) {
     // Analysis is flow-insensitive, so do nothing here.
   } else if (auto Call = dyn_cast<CallInst>(Inst)) {

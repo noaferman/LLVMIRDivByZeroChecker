@@ -1,7 +1,10 @@
 # Div-By-Zero Checker in LLVM IR
-This is a divide-by-zero checker, based off of Dr. Dr. Mayur Naik.
+This is a divide-by-zero checker, based off of a framework by Dr. Mayur Naik.
 
-Run /DivByZeroChecker in the provided docker container.
+To run the interval lattive, use the IntervalLattice Branch.
+Otherwise, the Top, Bottom, Zero, Non-Zero lattice is used.
+
+Run LLVMIRDivByZeroChecker/DivByZeroChecker in the provided docker container.
 
 To run our build on all tests:
 cd test

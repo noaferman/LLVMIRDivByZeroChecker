@@ -1,6 +1,6 @@
 #include "Utils.h"
 #include "DivZeroAnalysis.h"
-#include "Domain.h"
+#include "Interval.h"
 #include "llvm/IR/Constants.h"
 
 const char *WHITESPACES = " \t\n\r";
@@ -35,29 +35,26 @@ std::string variable(const Value *Val) {
   return RetVal;
 }
 
-Domain::Element extractFromValue(const Value *Val, int* min, int* max) {
-  if (dyn_cast<UndefValue>(Val)) {
-    return Domain::Uninit;
-  } else if (auto ConstVal = dyn_cast<ConstantData>(Val)) {
+void extractFromValue(const Value *Val, int* min, int* max) {
+ if (auto ConstVal = dyn_cast<ConstantData>(Val)) {
     if (ConstVal->isZeroValue()){
-      return Domain::Interval; // the interval will just be 0s
-    } else{
-     return Domain::Uninit;
-    } 
+      *min = MIN_INT;
+      *max = MAX_INT;
+      return;
   }
-  return Domain::Uninit;
+ }
+
+  *min = INT_MIN;
+  *max = INT_MAX;
 }
 
-Domain *getOrExtract(const Memory *Mem, const Value *Val) {
-  return getOrDefault<Domain *>(Mem, variable(Val), [&V = Val] {
-    // will get default inited to 0 anyways 
-    int min = 0;
-    int max = 0;
-    Domain::Element element = extractFromValue(V, &min, &max);
-    return new Domain(element, min, max);
+Interval *getOrExtract(const Memory *Mem, const Value *Val) {
+  return getOrDefault<Interval *>(Mem, variable(Val), [&V = Val] {
+    int min = MIN_INT;
+    int max = MAX_INT;
+    extractFromValue(V, &min, &max);
+    return new Interval(min, max);
   });
-
-  return NULL;
 }
 
 void printMemory(const Memory *Mem) {

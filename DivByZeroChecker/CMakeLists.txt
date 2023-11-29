@@ -22,7 +22,7 @@ if (USE_REFERENCE)
   add_llvm_library(DivZeroPass MODULE
     src/DivZeroAnalysis.cpp
     src/Transfer.cpp
-    src/Domain.cpp
+    src/Interval.cpp
     src/Utils.cpp
   )
 
@@ -33,7 +33,7 @@ else (USE_REFERENCE)
   src/DivZeroAnalysis.cpp
   src/Transfer.cpp
   src/ChaoticIteration.cpp
-  src/Domain.cpp
+  src/Interval.cpp
   src/Utils.cpp
   )
 endif (USE_REFERENCE)

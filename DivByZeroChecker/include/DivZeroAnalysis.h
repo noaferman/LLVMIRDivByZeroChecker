@@ -14,11 +14,11 @@
 #include <map>
 #include <string>
 
-#include "Domain.h"
+#include "Interval.h"
 
 namespace dataflow {
 
-using Memory = std::map<std::string, Domain *>;
+using Memory = std::map<std::string, Interval *>;
 
 struct DivZeroAnalysis : public FunctionPass {
   static char ID;

@@ -56,7 +56,7 @@ std::vector<Instruction *> getSuccessors(Instruction *Inst) {
 }
 
 /**
- * @brief Joins two Memory objects (Mem1 and Mem2), accounting for Domain
+ * @brief Joins two Memory objects (Mem1 and Mem2), accounting for Interval
  * values.
  *
  * @param Mem1 First memory.
@@ -70,21 +70,21 @@ Memory *join(Memory *Mem1, Memory *Mem2) {
   // If instruction is in both, join val of Mem1[var], and Mem2[var]
   for(auto& kv_pair : *Mem1){
     std::string key = kv_pair.first;
-    Domain *value = kv_pair.second;
+    Interval *value = kv_pair.second;
 
     if(Mem2->find(key) == Mem2->end()){
       // add to Mem2
       (*MemRes)[key] = value;
     } else{
       // join
-      (*MemRes)[key] = Domain::join(value, (*Mem2)[key]);
+      (*MemRes)[key] = Interval::join(value, (*Mem2)[key]);
     }
   }
 
   // Now, we check if there is a vartiable in Mem2 not in Mem1
   for(auto& kv_pair : *Mem2){
     std::string key = kv_pair.first;
-    Domain *value = kv_pair.second;
+    Interval *value = kv_pair.second;
 
     if(Mem1->find(key) == Mem1->end()){
       // add to Mem2
@@ -117,23 +117,23 @@ void DivZeroAnalysis::flowIn(Instruction *Inst, Memory *InMem) {
 bool equal(Memory *Mem1, Memory *Mem2) {
   for(auto& kv_pair : *Mem1){
     std::string key = kv_pair.first;
-    Domain *value = kv_pair.second;
+    Interval *value = kv_pair.second;
 
     if(Mem2->find(key) == Mem2->end()){
       // doesn't exist in both
       return false;
     } else{
       // check for equality
-      if(!Domain::equal(*value, *(*Mem2)[key])) return false;
+      if(!Interval::equal(*value, *(*Mem2)[key])) return false;
     }
   }
 
-  // At this point, we know all the domains are equal for the variables that are in both memories.
+  // At this point, we know all the Intervals are equal for the variables that are in both memories.
   // So, if Mem2 has an element that is not in Mem1 we return false.
   // No need to check equality again.
   for(auto& kv_pair : *Mem2){
     std::string key = kv_pair.first;
-    Domain *value = kv_pair.second;
+    Interval *value = kv_pair.second;
 
     if(Mem1->find(key) == Mem1->end()){
       // doesn't exist in both
@@ -176,7 +176,7 @@ void DivZeroAnalysis::doAnalysis(Function &F) {
     Memory *Post = new Memory;
     for(auto& kv_pair : *InMap[Inst]){
       std::string key = kv_pair.first;
-      Domain *value = kv_pair.second;
+      Interval *value = kv_pair.second;
 
       if(NewMem->find(key) == NewMem->end()){
          (*Post)[key] = value;
@@ -185,7 +185,7 @@ void DivZeroAnalysis::doAnalysis(Function &F) {
 
     for(auto& kv_pair : *NewMem){
       std::string key = kv_pair.first;
-      Domain *value = kv_pair.second;
+      Interval *value = kv_pair.second;
       (*Post)[key] = value;
     }
 

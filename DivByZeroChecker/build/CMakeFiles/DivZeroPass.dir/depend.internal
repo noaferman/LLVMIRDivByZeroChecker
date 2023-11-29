@@ -3,7 +3,7 @@
 
 CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o
  ../include/DivZeroAnalysis.h
- ../include/Domain.h
+ ../include/Interval.h
  ../include/Utils.h
  /DivByZeroChecker/src/ChaoticIteration.cpp
  /usr/lib/llvm-8/include/llvm-c/DataTypes.h
@@ -107,7 +107,7 @@ CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o
  /usr/lib/llvm-8/include/llvm/Support/type_traits.h
 CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.o
  ../include/DivZeroAnalysis.h
- ../include/Domain.h
+ ../include/Interval.h
  ../include/Utils.h
  /DivByZeroChecker/src/DivZeroAnalysis.cpp
  /usr/lib/llvm-8/include/llvm-c/DataTypes.h
@@ -209,9 +209,9 @@ CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.o
  /usr/lib/llvm-8/include/llvm/Support/UniqueLock.h
  /usr/lib/llvm-8/include/llvm/Support/raw_ostream.h
  /usr/lib/llvm-8/include/llvm/Support/type_traits.h
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o
- ../include/Domain.h
- /DivByZeroChecker/src/Domain.cpp
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o
+ ../include/Interval.h
+ /DivByZeroChecker/src/Interval.cpp
  /usr/lib/llvm-8/include/llvm-c/DataTypes.h
  /usr/lib/llvm-8/include/llvm/ADT/None.h
  /usr/lib/llvm-8/include/llvm/ADT/Optional.h
@@ -233,7 +233,7 @@ CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o
  /usr/lib/llvm-8/include/llvm/Support/type_traits.h
 CMakeFiles/DivZeroPass.dir/src/Transfer.cpp.o
  ../include/DivZeroAnalysis.h
- ../include/Domain.h
+ ../include/Interval.h
  ../include/Utils.h
  /DivByZeroChecker/src/Transfer.cpp
  /usr/lib/llvm-8/include/llvm-c/DataTypes.h
@@ -337,7 +337,7 @@ CMakeFiles/DivZeroPass.dir/src/Transfer.cpp.o
  /usr/lib/llvm-8/include/llvm/Support/type_traits.h
 CMakeFiles/DivZeroPass.dir/src/Utils.cpp.o
  ../include/DivZeroAnalysis.h
- ../include/Domain.h
+ ../include/Interval.h
  ../include/Utils.h
  /DivByZeroChecker/src/Utils.cpp
  /usr/lib/llvm-8/include/llvm-c/DataTypes.h

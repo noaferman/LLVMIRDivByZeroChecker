@@ -262,32 +262,32 @@ src/DivZeroAnalysis.cpp.s:
 	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.s
 .PHONY : src/DivZeroAnalysis.cpp.s
 
-src/Domain.o: src/Domain.cpp.o
+src/Interval.o: src/Interval.cpp.o
 
-.PHONY : src/Domain.o
+.PHONY : src/Interval.o
 
 # target to build an object file
-src/Domain.cpp.o:
-	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o
-.PHONY : src/Domain.cpp.o
+src/Interval.cpp.o:
+	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o
+.PHONY : src/Interval.cpp.o
 
-src/Domain.i: src/Domain.cpp.i
+src/Interval.i: src/Interval.cpp.i
 
-.PHONY : src/Domain.i
+.PHONY : src/Interval.i
 
 # target to preprocess a source file
-src/Domain.cpp.i:
-	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Domain.cpp.i
-.PHONY : src/Domain.cpp.i
+src/Interval.cpp.i:
+	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Interval.cpp.i
+.PHONY : src/Interval.cpp.i
 
-src/Domain.s: src/Domain.cpp.s
+src/Interval.s: src/Interval.cpp.s
 
-.PHONY : src/Domain.s
+.PHONY : src/Interval.s
 
 # target to generate assembly for a file
-src/Domain.cpp.s:
-	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Domain.cpp.s
-.PHONY : src/Domain.cpp.s
+src/Interval.cpp.s:
+	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Interval.cpp.s
+.PHONY : src/Interval.cpp.s
 
 src/Transfer.o: src/Transfer.cpp.o
 
@@ -365,9 +365,9 @@ help:
 	@echo "... src/DivZeroAnalysis.o"
 	@echo "... src/DivZeroAnalysis.i"
 	@echo "... src/DivZeroAnalysis.s"
-	@echo "... src/Domain.o"
-	@echo "... src/Domain.i"
-	@echo "... src/Domain.s"
+	@echo "... src/Interval.o"
+	@echo "... src/Interval.i"
+	@echo "... src/Interval.s"
 	@echo "... src/Transfer.o"
 	@echo "... src/Transfer.i"
 	@echo "... src/Transfer.s"

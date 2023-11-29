@@ -18,22 +18,23 @@ std::string variable(const Value *Val);
 /**
  * @brief Try to extract the Domain of a value.
  *
- * When Val is a ConstantInt, we can extract its Domain.
+ * When Val is a ConstantInt, we can check if it is non-zero.
+ * If so, we set the interval to [0, 0]
+ * Otherwise, to top.
  *
- * @param Val Value to extract the Domain for.
- * @return Domain::Element Domain of Val, or Domain::Uninit if
- *  Val is not a ConstantInt.
+
+ * @param Val Value to extract the Interval for.
+ * min and max are output paramaters for the interval range.
  */
-Domain::Element extractFromValue(const Value *Val, int* min, int* max);
+void extractFromValue(const Value *Val, int* min, int* max);
 
 /**
- * @brief Get the Domain of Val from Memory Or try Extracting it.
+ * @brief Get the Interval of Val from Memory Or try Extracting it.
  *
  * @param Mem Memory containing the domain of Val.
  * @param Val Value whose domain is to be extracted from Mem.
- * @return Domain* Domain of Val in Mem
  */
-Domain *getOrExtract(const Memory *Mem, const Value *Val);
+Interval *getOrExtract(const Memory *Mem, const Value *Val);
 
 /**
  * @brief Print the Memorm Mem in a human readable format to stderr.

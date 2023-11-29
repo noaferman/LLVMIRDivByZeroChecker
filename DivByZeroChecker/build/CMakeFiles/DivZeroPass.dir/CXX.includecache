@@ -31,10 +31,10 @@ map
 -
 string
 -
-Domain.h
-../include/Domain.h
+Interval.h
+../include/Interval.h
 
-../include/Domain.h
+../include/Interval.h
 llvm/Support/raw_ostream.h
 ../include/llvm/Support/raw_ostream.h
 
@@ -54,9 +54,9 @@ DivZeroAnalysis.h
 Utils.h
 /DivByZeroChecker/src/Utils.h
 
-/DivByZeroChecker/src/Domain.cpp
-Domain.h
-/DivByZeroChecker/src/Domain.h
+/DivByZeroChecker/src/Interval.cpp
+Interval.h
+/DivByZeroChecker/src/Interval.h
 ostream
 -
 
@@ -71,8 +71,8 @@ Utils.h
 /DivByZeroChecker/src/Utils.h
 DivZeroAnalysis.h
 /DivByZeroChecker/src/DivZeroAnalysis.h
-Domain.h
-/DivByZeroChecker/src/Domain.h
+Interval.h
+/DivByZeroChecker/src/Interval.h
 llvm/IR/Constants.h
 /DivByZeroChecker/src/llvm/IR/Constants.h
 

@@ -129,28 +129,28 @@ CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o.provides: CMakeFiles/DivZe
 CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o.provides.build: CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o
 
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o: CMakeFiles/DivZeroPass.dir/flags.make
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o: ../src/Domain.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/DivByZeroChecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o"
-	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o -c /DivByZeroChecker/src/Domain.cpp
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o: CMakeFiles/DivZeroPass.dir/flags.make
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o: ../src/Interval.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/DivByZeroChecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o"
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o -c /DivByZeroChecker/src/Interval.cpp
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DivZeroPass.dir/src/Domain.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /DivByZeroChecker/src/Domain.cpp > CMakeFiles/DivZeroPass.dir/src/Domain.cpp.i
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DivZeroPass.dir/src/Interval.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /DivByZeroChecker/src/Interval.cpp > CMakeFiles/DivZeroPass.dir/src/Interval.cpp.i
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DivZeroPass.dir/src/Domain.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /DivByZeroChecker/src/Domain.cpp -o CMakeFiles/DivZeroPass.dir/src/Domain.cpp.s
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DivZeroPass.dir/src/Interval.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /DivByZeroChecker/src/Interval.cpp -o CMakeFiles/DivZeroPass.dir/src/Interval.cpp.s
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.requires:
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.requires:
 
-.PHONY : CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.requires
+.PHONY : CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.requires
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.provides: CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.requires
-	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.provides.build
-.PHONY : CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.provides
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.provides: CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.requires
+	$(MAKE) -f CMakeFiles/DivZeroPass.dir/build.make CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.provides.build
+.PHONY : CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.provides
 
-CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.provides.build: CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o
+CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.provides.build: CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o
 
 
 CMakeFiles/DivZeroPass.dir/src/Utils.cpp.o: CMakeFiles/DivZeroPass.dir/flags.make
@@ -182,7 +182,7 @@ DivZeroPass_OBJECTS = \
 "CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.o" \
 "CMakeFiles/DivZeroPass.dir/src/Transfer.cpp.o" \
 "CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o" \
-"CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o" \
+"CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o" \
 "CMakeFiles/DivZeroPass.dir/src/Utils.cpp.o"
 
 # External object files for target DivZeroPass
@@ -191,7 +191,7 @@ DivZeroPass_EXTERNAL_OBJECTS =
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.o
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/Transfer.cpp.o
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o
-DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o
+DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/src/Utils.cpp.o
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/build.make
 DivZeroPass.so: CMakeFiles/DivZeroPass.dir/link.txt
@@ -206,7 +206,7 @@ CMakeFiles/DivZeroPass.dir/build: DivZeroPass.so
 CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/DivZeroAnalysis.cpp.o.requires
 CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/Transfer.cpp.o.requires
 CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/ChaoticIteration.cpp.o.requires
-CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/Domain.cpp.o.requires
+CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/Interval.cpp.o.requires
 CMakeFiles/DivZeroPass.dir/requires: CMakeFiles/DivZeroPass.dir/src/Utils.cpp.o.requires
 
 .PHONY : CMakeFiles/DivZeroPass.dir/requires

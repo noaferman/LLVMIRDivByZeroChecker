@@ -28,15 +28,12 @@ bool DivZeroAnalysis::check(Instruction *Inst) {
     if(op_code != Instruction::UDiv && op_code != Instruction::SDiv) return false;
 
     llvm::Value *divisor = BO->getOperand(1);
-    Domain *domain_of_divisor =  getOrExtract(InMap[Inst], divisor);
-
-    if (Domain::equal(*domain_of_divisor, Domain::Uninit)) return true;
+    Interval *domain_of_divisor =  getOrExtract(InMap[Inst], divisor);
 
     // domain is an interval. Check if 0 is in the interval.
-    
-
-    int min = domain_of_divisor->interval_min;
-    int max = domain_of_divisor->interval_max;
+  
+    int min = domain_of_divisor->min;
+    int max = domain_of_divisor->max;
 
     if(min == 0 || max == 0) return true;
     if(min < 0 && max > 0) return true;

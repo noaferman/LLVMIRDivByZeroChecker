@@ -49,13 +49,13 @@ Interval *getOrExtract(const Memory *Mem, const Value *Val);
 void printMemory(const Memory *Mem);
 
 /**
- * @brief Print the Before and After domains of an instruction
+ * @brief Print the Before and After Intervals of an instruction
  * wrt. In and Out memory.
  *
  * Format:
  *   <instruction>:    [ <before> --> <after> ]
  *
- * @param Inst The instruction to print the domains for.
+ * @param Inst The instruction to print the Intervals for.
  * @param InMem The incoming memory.
  * @param OutMem The outgoing memory.
  */

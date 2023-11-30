@@ -14,9 +14,6 @@ namespace dataflow {
 // Abstract Interval Implementation
 //===----------------------------------------------------------------------===//
 
-/*
- * Implement your abstract Interval.
- */
 class Interval {
 public:
   // Top is Interval with {INT_MIN, INT_MAX} range.
